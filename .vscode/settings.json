@@ -1,0 +1,12 @@
+{
+    "C_Cpp.default.compilerPath": "C:/msys64/ucrt64/bin/gcc.exe",
+    "files.associations": {
+        "stdio.h": "c",
+        "random": "c",
+        "array": "c",
+        "functional": "c",
+        "mytools.h": "c",
+        "initializer_list": "c",
+        "utility": "c"
+    }
+}

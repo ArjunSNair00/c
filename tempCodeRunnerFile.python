@@ -1,0 +1,102 @@
+from datetime import datetime, timedelta
+
+def parse_time_input(time_str):
+    parts = time_str.strip().split()
+    if len(parts) != 3:
+        raise ValueError("Please enter exactly three integers separated by spaces: days hours minutes")
+    days, hours, minutes = map(int, parts)
+    return timedelta(days=days, hours=hours, minutes=minutes)
+
+def simulate_upgrade_finish(upgrade_time, cooldown_left):
+    BOOST_DURATION_REAL = timedelta(minutes=22)
+    BOOST_MULTIPLIER = 9
+    COOLDOWN_DURATION_REAL = timedelta(hours=22)
+
+    now = datetime.now()
+    real_time_elapsed = timedelta(0)
+    upgrade_time_left = upgrade_time
+    cooldown_remaining = cooldown_left
+
+    while upgrade_time_left > timedelta(0):
+        if cooldown_remaining > timedelta(0):
+            process_time = min(cooldown_remaining, upgrade_time_left)
+            real_time_elapsed += process_time
+            upgrade_time_left -= process_time
+            cooldown_remaining -= process_time
+        else:
+            max_upgrade_processed = BOOST_DURATION_REAL * BOOST_MULTIPLIER
+            if upgrade_time_left <= max_upgrade_processed:
+                real_needed = upgrade_time_left / BOOST_MULTIPLIER
+                real_time_elapsed += real_needed
+                upgrade_time_left = timedelta(0)
+                cooldown_remaining = timedelta(0)
+            else:
+                real_time_elapsed += BOOST_DURATION_REAL
+                upgrade_time_left -= max_upgrade_processed
+                cooldown_remaining = COOLDOWN_DURATION_REAL
+
+    finish_time = now + real_time_elapsed
+
+    if cooldown_remaining > timedelta(0):
+        next_boost_time = finish_time + cooldown_remaining
+    else:
+        next_boost_time = finish_time + BOOST_DURATION_REAL + COOLDOWN_DURATION_REAL
+
+    return finish_time, next_boost_time
+
+def get_upgrades(num_upgrades, cooldown_left=None):
+    upgrades = []
+    next_boost_times = []
+    for i in range(num_upgrades):
+        print(f"\nEntry {i+1}:")
+        name = input("Upgrade name: ")
+        time_left_str = input("Enter time left (days hours minutes, e.g. '0 1 0'): ")
+        upgrade_time = parse_time_input(time_left_str)
+
+        if cooldown_left is not None:
+            finish_time, next_boost_time = simulate_upgrade_finish(upgrade_time, cooldown_left)
+            next_boost_times.append(next_boost_time)
+        else:
+            finish_time = datetime.now() + upgrade_time
+            next_boost_time = None
+
+        upgrades.append((name, finish_time))
+
+    earliest_next_boost = min(next_boost_times) if next_boost_times else None
+    return upgrades, earliest_next_boost
+
+def main():
+    print("Clash of Clans Upgrade Finish Time Calculator with Clock Tower Boost\n")
+
+    main_base_count = int(input("Number of main base upgrades: "))
+    builder_base_count = int(input("Number of builder base upgrades: "))
+
+    print("\n--- Main Base Upgrades ---")
+    main_base_upgrades, _ = get_upgrades(main_base_count)
+
+    print("\n--- Builder Base Upgrades ---")
+    cooldown_str = input("Enter Clock Tower cooldown left (hours minutes, e.g. '0 0' if ready): ")
+    cooldown_parts = cooldown_str.strip().split()
+    if len(cooldown_parts) != 2:
+        print("Invalid cooldown input. Enter exactly two integers: hours minutes")
+        return
+    cooldown_left = timedelta(hours=int(cooldown_parts[0]), minutes=int(cooldown_parts[1]))
+
+    builder_base_upgrades, builder_next_boost = get_upgrades(builder_base_count, cooldown_left)
+
+    all_upgrades = main_base_upgrades + builder_base_upgrades
+    all_upgrades.sort(key=lambda x: x[1])
+
+    print("\n=== Upgrade Schedule ===")
+    for name, finish_time in all_upgrades:
+        date_str = finish_time.strftime("(%b %d)")
+        time_str = finish_time.strftime("%I:%M %p")
+        print(f"{name:<20} {date_str} {time_str}")
+
+    if builder_next_boost:
+        date_str = builder_next_boost.strftime("(%b %d)")
+        time_str = builder_next_boost.strftime("%I:%M %p")
+        print(f"\n{'[CLOCK TOWER]':<20} {date_str} {time_str}")
+
+if __name__ == "__main__":
+    main()
