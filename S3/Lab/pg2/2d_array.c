@@ -104,14 +104,11 @@ int main()
     }
     int t[k][3];
     printf("The transpose of tuple representation of sum matrix is: \n");
-    for (int i=0;i<=lr;i++){
-        for (int j=0;j<=lc;j++){
-            t[i][0]=sum[i][1];
-            t[i][1]=sum[i][0];
-            t[i][2]=sum[i][2];
-            printf("%d %d %d\n",t[i][0],t[i][1],t[i][2]);
-        }
-        printf("\n");
-        }
+    for (int i=0;i<k;i++){
+        t[i][0]=sum[i][1];
+        t[i][1]=sum[i][0];
+        t[i][2]=sum[i][2];
+        printf("%d %d %d\n",t[i][0],t[i][1],t[i][2]);
+    }
     return 0;
 }
