@@ -102,19 +102,14 @@ int main()
         if (sum[i][1]>lc)
             lc=sum[i][1];
     }
-    int summ[lr+1][lc+1];
-    for (int i=0;i<=lr;i++)
+    int t[k][3];
+    printf("The transpose of tuple representation of sum matrix is: \n");
+    for (int i=0;i<=lr;i++){
         for (int j=0;j<=lc;j++){
-            summ[i][j]=0;
-        }
-    for (int i=0;i<k;i++){
-        summ[sum[i][0]][sum[i][1]]=sum[i][2];
-    }
-    
-    printf("The matrix form of sum tuple form is: \n");
-        for (int i=0;i<=lr;i++){
-        for (int j=0;j<=lc;j++){
-            printf("%d ",summ[i][j]);
+            t[i][0]=sum[i][1];
+            t[i][1]=sum[i][0];
+            t[i][2]=sum[i][2];
+            printf("%d %d %d\n",t[i][0],t[i][1],t[i][2]);
         }
         printf("\n");
         }
