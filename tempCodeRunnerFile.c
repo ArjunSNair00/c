@@ -102,13 +102,5 @@ int main()
         if (sum[i][1]>lc)
             lc=sum[i][1];
     }
-    int summ[lr+1][lc+1];
-    for (int i=0;i<=lr;i++)
-        for (int j=0;j<=lc;j++){
-            summ[i][j]=0;
-        }
-    for (int i=0;i<k;i++){
-        summ[sum[i][0]][sum[i][1]]=sum[i][2];
-    }
     return 0;
 }

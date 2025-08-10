@@ -73,7 +73,6 @@ int main()
 
   default:
     printf("\nInvalid choice\n");
-    break;
   }}
   return 0;
 }
