@@ -1,182 +1,107 @@
 #include <stdio.h>
-#include <stdlib.h> // Included for general utility, but not strictly required for this code
 
-// Max stack size
-#define MAX_SIZE 100
+#define MAX 100
 
-// Stack implementation for operator conversion
-char op_stack[MAX_SIZE];
-int op_top = -1;
+// Operator stack
+char opStk[MAX];
+int opTop = -1;
 
-// Stack implementation for postfix evaluation
-int eval_stack[MAX_SIZE];
-int eval_top = -1;
+// Evaluation stack
+int valStk[MAX];
+int valTop = -1;
 
-// Function prototypes for operator stack
-void op_push(char item);
-char op_pop();
-int op_is_empty();
-int op_is_full();
+// --- Operator stack functions ---
+void opPush(char ch) { if (opTop < MAX - 1) opStk[++opTop] = ch; }
+char opPop() { return (opTop == -1) ? -1 : opStk[opTop--]; }
+int opEmpty() { return opTop == -1; }
 
-// Function prototypes for evaluation stack
-void eval_push(int item);
-int eval_pop();
-int eval_is_empty();
+// --- Value stack functions ---
+void valPush(int n) { if (valTop < MAX - 1) valStk[++valTop] = n; }
+int valPop() { return (valTop == -1) ? 0 : valStk[valTop--]; }
+int valEmpty() { return valTop == -1; }
 
-int precedence(char op);
-void infixToPostfix(char* infix, char* postfix);
-void evaluatePostfix(char* postfix);
-
-// --- Operator Stack Functions ---
-void op_push(char item) {
-    if (op_top >= MAX_SIZE - 1) {
-        printf("Operator Stack Overflow\n");
-    } else {
-        op_top++;
-        op_stack[op_top] = item;
-    }
-}
-
-char op_pop() {
-    if (op_top == -1) {
-        return -1;
-    } else {
-        char item = op_stack[op_top];
-        op_top--;
-        return item;
-    }
-}
-
-int op_is_empty() {
-    return op_top == -1;
-}
-
-int op_is_full() {
-    return op_top == MAX_SIZE - 1;
-}
-
-// --- Evaluation Stack Functions ---
-void eval_push(int item) {
-    if (eval_top >= MAX_SIZE - 1) {
-        printf("Evaluation Stack Overflow\n");
-    } else {
-        eval_top++;
-        eval_stack[eval_top] = item;
-    }
-}
-
-int eval_pop() {
-    if (eval_top == -1) {
-        printf("Evaluation Stack Underflow\n");
-        return 0; // Return 0 or handle error appropriately
-    } else {
-        int item = eval_stack[eval_top];
-        eval_top--;
-        return item;
-    }
-}
-
-int eval_is_empty() {
-    return eval_top == -1;
-}
-
-// Function to determine the precedence of an operator
-int precedence(char op) {
-    if (op == '+' || op == '-')
-        return 1;
-    if (op == '*' || op == '/')
-        return 2;
-    if (op == '^')
-        return 3;
+// Operator precedence
+int prec(char op) {
+    if (op == '+' || op == '-') return 1;
+    if (op == '*' || op == '/') return 2;
+    if (op == '^') return 3;
     return 0;
 }
 
-// Function to convert an infix expression to postfix
-void infixToPostfix(char* infix, char* postfix) {
-    op_top = -1; // Reset operator stack
+// Infix → Postfix
+void infixToPostfix(char* in, char* out) {
+    opTop = -1;
     int j = 0;
 
-    for (int i = 0; infix[i] != '\0'; i++) {
-        char current_char = infix[i];
+    for (int i = 0; in[i] != '\0'; i++) {
+        char ch = in[i];
 
-        if (current_char >= '0' && current_char <= '9') {
-            postfix[j++] = current_char;
-        } else if (current_char == '(') {
-            op_push(current_char);
-        } else if (current_char == ')') {
-            while (!op_is_empty() && op_stack[op_top] != '(') {
-                postfix[j++] = op_pop();
+        if (ch >= '0' && ch <= '9') {
+            out[j++] = ch;
+        }
+        else if (ch == '(') {
+            opPush(ch);
+        }
+        else if (ch == ')') {
+            while (!opEmpty() && opStk[opTop] != '(') {
+                out[j++] = opPop();
             }
-            if (!op_is_empty() && op_stack[op_top] == '(') {
-                op_pop(); // Discard the '('
+            if (!opEmpty() && opStk[opTop] == '(') opPop();
+        }
+        else { // Operator
+            while (!opEmpty() && opStk[opTop] != '(' &&
+                   prec(opStk[opTop]) >= prec(ch)) {
+                if (prec(opStk[opTop]) == prec(ch) && ch == '^') break;
+                out[j++] = opPop();
             }
-        } else { // Operator
-            while (!op_is_empty() && op_stack[op_top] != '(' && precedence(op_stack[op_top]) >= precedence(current_char)) {
-                if (precedence(op_stack[op_top]) == precedence(current_char) && current_char == '^') {
-                    break;
-                }
-                postfix[j++] = op_pop();
-            }
-            op_push(current_char);
+            opPush(ch);
         }
     }
 
-    while (!op_is_empty()) {
-        postfix[j++] = op_pop();
-    }
-    postfix[j] = '\0';
+    while (!opEmpty()) out[j++] = opPop();
+    out[j] = '\0';
 }
 
-// Function to evaluate a postfix expression
-void evaluatePostfix(char* postfix) {
-    eval_top = -1; // Reset evaluation stack
-    int a, b, result;
+// Evaluate postfix
+void evalPostfix(char* post) {
+    valTop = -1;
+    for (int i = 0; post[i] != '\0'; i++) {
+        char ch = post[i];
 
-    for (int i = 0; postfix[i] != '\0'; i++) {
-        char current_char = postfix[i];
+        if (ch >= '0' && ch <= '9') {
+            valPush(ch - '0');
+        }
+        else {
+            int b = valPop();
+            int a = valPop();
+            int res = 0;
 
-        if (current_char >= '0' && current_char <= '9') {
-            eval_push(current_char - '0'); // Convert char to int and push
-        } else { // Operator
-            b = eval_pop();
-            a = eval_pop();
-
-            switch (current_char) {
-                case '+': result = a + b; break;
-                case '-': result = a - b; break;
-                case '*': result = a * b; break;
-                case '/': result = a / b; break;
+            switch (ch) {
+                case '+': res = a + b; break;
+                case '-': res = a - b; break;
+                case '*': res = a * b; break;
+                case '/': res = a / b; break;
                 case '^':
-                    result = 1;
-                    for(int k = 0; k < b; k++) {
-                        result *= a;
-                    }
+                    res = 1;
+                    for (int k = 0; k < b; k++) res *= a;
                     break;
             }
-            eval_push(result);
+            valPush(res);
         }
     }
-
-    if (!eval_is_empty()) {
-        printf("Result of evaluation: %d\n", eval_pop());
-    }
+    if (!valEmpty()) printf("Result: %d\n", valPop());
 }
 
 int main() {
-    char infix_expr[MAX_SIZE];
-    char postfix_expr[MAX_SIZE];
+    char infix[MAX], postfix[MAX];
 
-    printf("Enter an infix expression (single-digit operands only): ");
-    scanf("%s", infix_expr);
-    
-    printf("Infix expression: %s\n", infix_expr);
-    
-    // Convert infix to postfix
-    infixToPostfix(infix_expr, postfix_expr);
-    printf("Postfix expression: %s\n", postfix_expr);
+    printf("Enter infix (single-digit numbers): ");
+    scanf("%s", infix);
 
-    // Evaluate the postfix expression
-    evaluatePostfix(postfix_expr);
-    
+    infixToPostfix(infix, postfix);
+    printf("Postfix: %s\n", postfix);
+
+    evalPostfix(postfix);
+
     return 0;
 }
