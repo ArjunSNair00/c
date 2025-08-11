@@ -4,8 +4,12 @@
 int front = -1, rear = -1;
 int deque[MAX];
 
-int is_full(int size) { return (front == 0 && rear == size - 1) || (front == rear + 1); }
-int is_empty() { return front == -1; }
+int is_full(int size) {
+    return (front == 0 && rear == size - 1) || (front == rear + 1); 
+}
+int is_empty() {
+    return front == -1; 
+}
 
 void insert_front(int data, int size) {
     if (is_full(size)) {
