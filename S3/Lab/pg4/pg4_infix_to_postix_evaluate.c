@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-#define max 20
+#define max 100
 
 // ---------------- Infix → Postfix ----------------
 char opStack[max];   // operator stack
@@ -22,7 +22,7 @@ int priority(char x) {
     return -1;
 }
 
-int is_alnum(char c) {
+int is_num(char c) {
     return (c >= '0' && c <= '9');  // only digits
 }
 
@@ -31,7 +31,7 @@ void infixToPostfix(char infix[], char postfix[]) {
     int k = 0;
 
     while (*e != '\0') {
-        if (is_alnum(*e)) {
+        if (is_num(*e)) {
             postfix[k++] = *e;
         } 
         else if (*e == '(') {
@@ -72,7 +72,7 @@ int evaluatePostfix(char postfix[]) {
     char *p = postfix;
     int a, b;
     while (*p != '\0') {
-        if (is_alnum(*p)) {
+        if (is_num(*p)) {
             pushVal(*p - '0');  // convert char → int
         } else {
             b = popVal();
