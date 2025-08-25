@@ -1,0 +1,5 @@
+# This directory is a Syncthing folder marker.
+# Do not delete.
+
+folderID: bqfpc-roxrj
+created: 2025-08-19T04:18:43+05:30

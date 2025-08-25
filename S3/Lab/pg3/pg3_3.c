@@ -5,7 +5,7 @@ int front = -1, rear = -1;
 int queue[MAX];
 
 int is_full(int size) {
-    return ((rear + 1) % size) == front;
+    return (front == (rear + 1) % size);
 }
 
 int is_empty() {
@@ -33,7 +33,7 @@ int dequeue(int size) {
     }
     int data = queue[front];
     if (front == rear) {
-        front = rear = -1;
+        front = rear = -1;  // queue became empty
     } else {
         front = (front + 1) % size;
     }
@@ -60,33 +60,23 @@ int main() {
     scanf("%d", &size);
 
     while (1) {
-        printf("\n1.Enqueue  2.Dequeue  3.Display  4.Exit: ");
+        printf("\n1.Enqueue  2.Dequeue  3.Exit: ");
         scanf("%d", &choice);
 
-        switch (choice) {
-            case 1:
-                printf("Enter data to enqueue: ");
-                scanf("%d", &data);
-                if (enqueue(data, size) == 0) {
-                    printf("Queue after enqueue: ");
-                    display(size);
-                }
-                break;
-            case 2:
-                if (dequeue(size) != -1) {
-                    printf("Queue after dequeue: ");
-                    display(size);
-                }
-                break;
-            case 3:
-                printf("Queue contents: ");
+        if (choice == 1) {
+            printf("Enter data: ");
+            scanf("%d", &data);
+            if (enqueue(data, size) != -1) {
+                printf("Enqueue: ");
                 display(size);
-                break;
-            case 4:
-                return 0;
-            default:
-                printf("Invalid choice\n");
+            }
         }
+        else if (choice == 2) {
+            if (dequeue(size) != -1) {
+                printf("Dequeue: ");
+                display(size);
+            }
+        }
+        else break;
     }
-    return 0;
 }
