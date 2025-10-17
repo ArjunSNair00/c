@@ -1,89 +1,48 @@
 #include <stdio.h>
-#include <math.h>
 #include <string.h>
 
 #define MAX 100
 
-char opstack[MAX];
-int topOp = -1;
+char stack[MAX];
+int top = -1;
 
-int valstack[MAX];
-int topVal = -1;
-
-void pushOp(char x){
-  opstack[++topOp] = x;
-}
-
-char popOp(){
-  if (topOp == -1)
-    return '\0';
-  return opstack[topOp--];
-}
-
-int priority(char x){
-  if (x == '(')
+void push(char c){ stack[++top] = c; }
+char pop(){ return (top == -1) ? '\0' : stack[top--]; }
+int priority(char c){
+    if(c=='+'||c=='-') return 1;
+    if(c=='*'||c=='/') return 2;
+    if(c=='^') return 3;
     return 0;
-  if (x == '+' || x == '-')
-    return 1;
-  if (x == '*' || x == '/')
-    return 2;
-  if (x == '^')
-    return 3;
-  return -1;
 }
 
-int is_num(char c){
-  return (c >= '0' && c <= '9');
-}
+int main() {
+    char infix[MAX], postfix[MAX];
+    int k = 0;
+    printf("Enter infix expression: ");
+    scanf("%s", infix);
 
-void infixToPostfix(char infix[], char postfix[]){
-  char *e = infix;
-  char x;
-  int k = 0;
-
-  while (*e != '\0'){
-    if (is_num(*e)){
-      postfix[k++] = *e;}
-    else if (*e == '('){
-      pushOp(*e);
+    for(int i=0; i<strlen(infix); i++){
+        char c = infix[i];
+        if(c>='0' && c<='9')
+            postfix[k++] = c;
+        else if(c=='(')
+            push(c);
+        else if(c==')'){
+            while(top!=-1 && stack[top]!='(')
+                postfix[k++] = pop();
+            pop();
+        }
+        else{
+            while(top!=-1 && priority(stack[top]) >= priority(c))
+                postfix[k++] = pop();
+            push(c);
+        }
     }
-    else if (*e == ')'){
-      while (topOp != -1 && (x = popOp()) != '('){
-        postfix[k++] = x;
-      }
-    }
-    else{
-      while (topOp != -1 && priority(opstack[topOp]) >= priority(*e)){
-        postfix[k++] = popOp();
-      }
-      pushOp(*e);
-    }
-    e++;
-  }
 
-  while (topOp != -1){
-    postfix[k++] = popOp();
-  }
-  postfix[k] = '\0';
-}
+    while(top!=-1)
+        postfix[k++] = pop();
 
-void pushVal(int x){
-  valstack[++topVal] = x;
-}
-
-int popVal(){
-  if (topVal == -1)
+    postfix[k] = '\0';
+    printf("Postfix expression: %s\n", postfix);
     return 0;
-  return valstack[topVal--];
-}
-
-int main(){
-  char infix[MAX], postfix[MAX];
-  printf("Enter infix expression: ");
-  scanf("%s", infix);
-
-  infixToPostfix(infix, postfix);
-  printf("Postfix expression: %s\n", postfix);
-
-  return 0;
 }

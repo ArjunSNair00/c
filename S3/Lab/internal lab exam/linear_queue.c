@@ -1,103 +1,37 @@
-// Linear Queue
-
 #include <stdio.h>
 #define MAX 100
 
-int front = -1, rear = -1;
-int queue[MAX];
+int queue[MAX], front = -1, rear = -1, size;
 
-int is_full(int size)
-{
-  return rear == size - 1;
+void enqueue(int x) {
+    if (rear == size - 1) { printf("Overflow\n"); return; }
+    if (front == -1) front = 0;
+    queue[++rear] = x;
 }
 
-int is_empty()
-{
-  return front == -1 || front > rear;
+int dequeue() {
+    if (front == -1 || front > rear) { printf("Underflow\n"); return -1; }
+    int x = queue[front++];
+    if (front > rear) front = rear = -1;
+    return x;
 }
 
-int enqueue(int data, int size)
-{
-  if (is_full(size))
-  {
-    printf("Overflow\n");
-    return -1;
-  }
-  if (is_empty())
-  {
-    front = 0;
-  }
-  queue[++rear] = data;
-  return 0;
+void display() {
+    if (front == -1) { printf("Empty\n"); return; }
+    for (int i = front; i <= rear; i++) printf("%d ", queue[i]);
+    printf("\n");
 }
 
-int dequeue()
-{
-  if (is_empty())
-  {
-    printf("Underflow\n");
-    return -1;
-  }
-  int data = queue[front];
-  if (front == rear)
-  {
-    front = -1;
-    rear = -1;
-  }
-  else
-  {
-    front++;
-  }
-  return data;
-}
+int main() {
+    int choice, x;
+    printf("Enter queue size: ");
+    scanf("%d", &size);
 
-void display()
-{
-  if (is_empty())
-  {
-    printf("Empty\n");
-    return;
-  }
-  printf("Queue: ");
-  for (int i = front; i <= rear; i++)
-  {
-    printf("%d ", queue[i]);
-  }
-  printf("\n");
-}
-
-int main()
-{
-  int size, choice, data;
-  printf("Enter queue size: ");
-  scanf("%d", &size);
-
-  while (1)
-  {
-    printf("\n1. Enqueue 2. Dequeue 3. Exit\n");
-    printf("Enter your choice: ");
-    scanf("%d", &choice);
-
-    if (choice == 1)
-    {
-      printf("Enter data: ");
-      scanf("%d", &data);
-      enqueue(data, size);
-      display();
+    while (1) {
+        scanf("%d", &choice);
+        if (choice == 1) { scanf("%d", &x); enqueue(x); display(); }
+        else if (choice == 2) { dequeue(); display(); }
+        else if (choice == 3) break;
     }
-    else if (choice == 2)
-    {
-      dequeue();
-      display();
-    }
-    else if (choice == 3)
-    {
-      break;
-    }
-    else
-    {
-      printf("Invalid choice\n");
-    }
-  }
-  return 0;
+    return 0;
 }

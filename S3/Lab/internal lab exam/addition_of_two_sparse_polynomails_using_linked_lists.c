@@ -15,7 +15,7 @@ struct node *createtempnode(int co, int ex) {
 }
 
 struct node *createpoly() {
-    struct node *TP = NULL, *temp = NULL, *LTP = NULL;
+    struct node *head = NULL, *temp = NULL, *last = NULL; //3 pointers
     int n, coeff, exp, i;
 
     printf("\nEnter number of terms: ");
@@ -24,38 +24,35 @@ struct node *createpoly() {
 
     for (i = 0; i < n; i++) {
         scanf("%d%d", &coeff, &exp);
-        temp = createtempnode(coeff, exp);
+        temp = createtempnode(coeff, exp); //temp variable for holding temp node
 
-        if (TP == NULL) {
-            TP = temp;
-            LTP = temp;
+        if (head == NULL) {
+            head = last = temp; //head and last are same on first node
         } else {
-            LTP->link = temp;
-            LTP = temp;
+            last->link = temp; //point new node from last node
+            last = temp; //move last to the new node
         }
     }
-    return TP;
+    return head; 
 }
 
-void displaypoly(struct node *temp) {
-    if (temp == NULL) {
+
+void displaypoly(struct node *poly) {
+    if (poly == NULL) {
         printf("0\n");
         return;
     }
-    while (temp != NULL) {
-        printf("%dx^%d", temp->coeff, temp->exp);
-        temp = temp->link;
-        if (temp != NULL)
-            printf(" + ");
+    while (poly != NULL) {
+        printf("%+dx^%d", poly->coeff, poly->exp);
+        poly = poly->link;
     }
     printf("\n");
 }
 
 struct node *polyadd(struct node *P1, struct node *P2) {
-    struct node *result = NULL, *last = NULL;
+    struct node *head = NULL, *temp=NULL, *last = NULL;
 
     while (P1 != NULL && P2 != NULL) {
-        struct node *temp;
         if (P1->exp > P2->exp) {
             temp = createtempnode(P1->coeff, P1->exp);
             P1 = P1->link;
@@ -68,8 +65,8 @@ struct node *polyadd(struct node *P1, struct node *P2) {
             P2 = P2->link;
         }
 
-        if (result == NULL)
-            result = last = temp;
+        if (head == NULL)
+            head = last = temp;
         else {
             last->link = temp;
             last = temp;
@@ -90,7 +87,7 @@ struct node *polyadd(struct node *P1, struct node *P2) {
         P2 = P2->link;
     }
 
-    return result;
+    return head;
 }
 
 int main() {
