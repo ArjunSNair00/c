@@ -3,34 +3,34 @@
 void merge(int arr[], int low, int mid, int high) {
     int n1 = mid - low + 1;
     int n2 = high - mid;
-    int left[n1], right[n2];
+    int Left[n1], Right[n2];
 
     for (int i = 0; i < n1; i++)
-        left[i] = arr[low + i];
+        Left[i] = arr[low + i];
     for (int j = 0; j < n2; j++)
-        right[j] = arr[mid + 1 + j];
+        Right[j] = arr[mid + 1 + j];
 
     int i = 0, j = 0, k = low;
 
     while (i < n1 && j < n2) {
-        if (left[i] <= right[j]) {
-            arr[k] = left[i];
+        if (Left[i] <= Right[j]) {
+            arr[k] = Left[i];
             i++;
         } else {
-            arr[k] = right[j];
+            arr[k] = Right[j];
             j++;
         }
         k++;
     }
 
     while (i < n1) {
-        arr[k] = left[i];
+        arr[k] = Left[i];
         i++;
         k++;
     }
 
     while (j < n2) {
-        arr[k] = right[j];
+        arr[k] = Right[j];
         j++;
         k++;
     }
@@ -46,14 +46,20 @@ void mergeSort(int arr[], int low, int high) {
 }
 
 int main() {
-    int arr[]={1,6,10,16,34,3,4};
+    int arr[50], n;
 
-    int n=sizeof(arr)/sizeof(arr[0]);
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+
+    printf("Enter %d elements:\n", n);
+    for (int i = 0; i < n; i++)
+        scanf("%d", &arr[i]);
 
     mergeSort(arr, 0, n - 1);
 
-    printf("\nSorted array: ");
+    printf("Sorted array: ");
     for (int i = 0; i < n; i++)
         printf("%d ", arr[i]);
+
     return 0;
 }

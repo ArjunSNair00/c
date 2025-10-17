@@ -22,6 +22,12 @@
         "deque": "c",
         "forward_list": "c",
         "list": "c",
-        "vector": "c"
-    }
+        "vector": "c",
+        "ratio": "c",
+        "chrono": "c",
+        "text_encoding": "c",
+        "typeindex": "c",
+        "typeinfo": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }
