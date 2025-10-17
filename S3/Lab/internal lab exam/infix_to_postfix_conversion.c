@@ -6,8 +6,13 @@
 char stack[MAX];
 int top = -1;
 
-void push(char c){ stack[++top] = c; }
-char pop(){ return (top == -1) ? '\0' : stack[top--]; }
+void push(char c){ 
+  stack[++top] = c; 
+}
+
+char pop(){ 
+  return (top == -1) ? '\0' : stack[top--]; }
+  
 int priority(char c){
     if(c=='+'||c=='-') return 1;
     if(c=='*'||c=='/') return 2;
