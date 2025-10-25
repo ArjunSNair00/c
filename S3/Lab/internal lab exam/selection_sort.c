@@ -15,13 +15,16 @@ void selectionSort(int arr[], int n) {
 }
 
 int main() {
-    int arr[50], n;
+    int n;
+    printf("Enter the number of elements: ");
     scanf("%d", &n);
+    int arr[n];
+    printf("Enter the elements: ");
     for (int i = 0; i < n; i++) 
         scanf("%d", &arr[i]);
 
     selectionSort(arr, n);
-
+    printf("Sorted array: ");
     for (int i = 0; i < n; i++) 
         printf("%d ", arr[i]);
     return 0;
