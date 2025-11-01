@@ -12,21 +12,21 @@ void swap(int *a,int *b){
 }
 
 int partition(int arr[],int low, int high){
-  int pivot=arr[low];
-  int i=low+1;
-  int j=high;
+  int pivot=arr[low]; //first element as pivot
+  int i=low+1; //dont include pivot (+1)
+  int j=high; 
   do{
-  while(arr[i]<=pivot){
-    i++;
+  while(arr[i]<=pivot){ //find larger element than pivot
+    i++; 
   }
-  while(arr[j]>pivot){
+  while(arr[j]>pivot){ //find smaller element than pivot
     j--;
   }
-  if(i<j){
-    swap(&arr[i],&arr[j]);
+  if(i<j){ //because dont swap if i>=j
+    swap(&arr[i],&arr[j]); //normal swap
   }}while(i<j);
-  swap(&arr[low],&arr[j]);
-  return j;
+  swap(&arr[low],&arr[j]); //
+  return j; //return partitionIndex
 }
 
 void quickSort(int arr[],int low,int high){
@@ -34,8 +34,8 @@ void quickSort(int arr[],int low,int high){
   
   if (low < high){//atleast 1 element
     partitionIndex=partition(arr,low,high);
-    quickSort(arr,low,partitionIndex-1);
-    quickSort(arr,partitionIndex+1,high);
+    quickSort(arr,low,partitionIndex-1); //left subarray
+    quickSort(arr,partitionIndex+1,high); //right subarray
 }}
 
 int main(){

@@ -42,7 +42,7 @@ void binarySearch(int arr[],int size,int key,int *index,int *found){
 
 int main(){
   int arr[]={1,6,19,15,400,5,1000,140};
-  int key=1000;
+  int key=8;
   int index=-1,found=0;
   int n=sizeof(arr)/sizeof(int);
   selectionSort(arr,n);
