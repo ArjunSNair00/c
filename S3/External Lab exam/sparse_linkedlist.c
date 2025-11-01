@@ -66,7 +66,9 @@ void createLinkedList(node** head,int coef,int exp){
 }
 
 node* addPoly(node* poly1,node* poly2){
-  
+  node* sum=NULL;
+  node* i,j,k;
+  return sum;
 }
 
 int main(){
