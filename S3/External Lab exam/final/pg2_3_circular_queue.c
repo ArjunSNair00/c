@@ -1,33 +1,30 @@
-// 1. Empty condition
-// front == -1 
-
-// 2. Full condition
-// (front == (rear + 1) % size)
-
-// 3. Enqueue update
-// rear = (rear + 1) % size;
-
-// 4. Dequeue update
-// front = (front + 1) % size;  
-
 #include <stdio.h>
 #define MAX 100
 
 int queue[MAX], front = -1, rear = -1, size;
 
+int is_full(){
+  //((front == 0 && rear == size - 1) || (front == rear + 1))
+  return front == (rear + 1) % size; // full, if advancing rear overlap front
+}
+
+int is_empty(){
+  return front == -1;
+}
+
 void enqueue(int x) {
-  if (front == (rear + 1) % size) { // full, if advancing rear overlap front
+  if (is_full()) { 
     printf("Overflow\n");
     return;
   }
-  if (front == -1)
+  if (is_empty())
     front = 0;
   rear = (rear + 1) % size; //advance rear
   queue[rear] = x;
 }
 
 int dequeue() {
-  if (front == -1){ // empty
+  if (is_empty()){
     printf("Underflow\n");
     return -1;
   }
@@ -40,7 +37,7 @@ int dequeue() {
 }
 
 void display() {
-  if (front == -1){
+  if (is_empty()){
     printf("Empty\n");
     return;
   }

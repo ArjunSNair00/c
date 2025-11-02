@@ -6,40 +6,40 @@ int queue[MAX];
 int size;
 
 int is_full(){
-  return ((front == 0 && rear == size - 1) || (front == rear + 1));
+  // return ((front == 0 && rear == size - 1) || (front == rear + 1));
+  return front == (rear + 1) % size;
 }
 
 int is_empty(){
-  return (front == -1);
+  return front == -1;
 }
 
-void insert_front(int data){
-  if (is_full(size)){
+void insert_front(int data) {
+  if (is_full()) {
     printf("Overflow\n");
     return;
   }
-  if (front == -1)
+  if (is_empty()) {
     front = rear = 0;
-  else if (front == 0)
-    front = size - 1;
-  else
-    front--;
+  } else {
+    front = (front - 1 + size) % size;  // safe wrap-around (0-1+4) % 4 = 3, normal - (2-1+4) % 4 = 1
+  }
   queue[front] = data;
 }
 
-void insert_rear(int data){
-  if (is_full(size)){
+void insert_rear(int data) {
+  if (is_full()) {
     printf("Overflow\n");
     return;
   }
-  if (front == -1)
-    front = rear = 0;
-  else if (rear == size - 1)
-    rear = 0;
-  else
-    rear++;
+  if (is_empty()) {
+    front = rear = 0; // empty queue → first element
+  } else {
+    rear = (rear + 1) % size; // wrap automatically, reset to left when reach size
+  }
   queue[rear] = data;
 }
+
 
 void delete_front(){
   if (is_empty()){
@@ -47,7 +47,7 @@ void delete_front(){
     return;
   }
   if (front == rear)
-    front = rear = -1;
+    front = rear = -1; // only one element
   else
     front = (front + 1) % size;
 }
@@ -75,7 +75,7 @@ void display()
     printf("%d ", queue[i]);
     if (i == rear)
         break;
-    i = (i + 1) % size;
+    i = (i + 1) % size; // circular step
   }
   printf("\n");
 }
