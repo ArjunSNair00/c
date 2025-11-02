@@ -14,7 +14,7 @@ void enqueue(int x) {
 }
 
 int dequeue() {
-  if (front == -1 || front > rear) { 
+  if (front == -1 || front > rear) { //never had values or if all elements have been dequeued, making front move past rear 
     printf("Underflow\n"); 
     return -1; }
   int x = queue[front++];
