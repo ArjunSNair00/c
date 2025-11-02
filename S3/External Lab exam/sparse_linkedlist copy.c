@@ -106,25 +106,19 @@ node* multiPoly(node* poly1, node* poly2) {
   return product;
 }
 
-void readPoly(node** poly){
-  int exp,coef,n;
-  printf("\nEnter no. of non-zero terms in polynomial: ");
-  scanf("%d",&n);
-  for(int i=0;i<n;i++){
-    printf("Enter the coefficient and exponent: ");
-    scanf("%d %d",&coef,&exp);
-    insertTerm(poly,coef,exp);
-  }
-}
-
 int main(){
-  node *poly1=NULL, *poly2=NULL, *sum=NULL, *product=NULL;
+  node* poly1=NULL;
+  node* poly2=NULL;
+  node* sum=NULL;
+  node* product=NULL;
 
-  readPoly(&poly1);
-  printf("\nFirst Polynomial: \n");
+  insertTerm(&poly1,3,4);
+  insertTerm(&poly1,1,2);
+  printf("First Polynomial: \n");
   displayPoly(poly1);
 
-  readPoly(&poly2);
+  insertTerm(&poly2,2,4);
+  insertTerm(&poly2,3,0);
   printf("\nSecond Polynomial: \n");
   displayPoly(poly2);
 
