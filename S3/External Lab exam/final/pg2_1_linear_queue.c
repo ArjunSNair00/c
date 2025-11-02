@@ -14,10 +14,12 @@ void enqueue(int x) {
 }
 
 int dequeue() {
+  //checks if the queue is empty before removing anything. prevents you from accessing memory after the reset.
   if (front == -1 || front > rear) { //never had values or if all elements have been dequeued, making front move past rear 
     printf("Underflow\n"); 
     return -1; }
   int x = queue[front++];
+  //resets the queue after removing the last element.
   if (front > rear) 
     front = rear = -1;
   return x;

@@ -34,7 +34,9 @@
         "complex": "c",
         "ctype.h": "c",
         "stdlib.h": "c",
-        "limits.h": "c"
+        "limits.h": "c",
+        "any": "c",
+        "type_traits": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

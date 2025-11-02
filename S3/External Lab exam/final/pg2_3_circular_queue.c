@@ -1,10 +1,22 @@
+// 1. Empty condition
+// front == -1 
+
+// 2. Full condition
+// (front == (rear + 1) % size)
+
+// 3. Enqueue update
+// rear = (rear + 1) % size;
+
+// 4. Dequeue update
+// front = (front + 1) % size;
+
 #include <stdio.h>
 #define MAX 100
 
 int queue[MAX], front = -1, rear = -1, size;
 
 void enqueue(int x) {
-  if ((rear + 1) % size == front) { // full
+  if (front == (rear + 1) % size) { // full
     printf("Overflow\n");
     return;
   }
