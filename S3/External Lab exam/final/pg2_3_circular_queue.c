@@ -8,7 +8,7 @@
 // rear = (rear + 1) % size;
 
 // 4. Dequeue update
-// front = (front + 1) % size;
+// front = (front + 1) % size;  
 
 #include <stdio.h>
 #define MAX 100
@@ -16,13 +16,13 @@
 int queue[MAX], front = -1, rear = -1, size;
 
 void enqueue(int x) {
-  if (front == (rear + 1) % size) { // full
+  if (front == (rear + 1) % size) { // full, if advancing rear overlap front
     printf("Overflow\n");
     return;
   }
   if (front == -1)
     front = 0;
-  rear = (rear + 1) % size;
+  rear = (rear + 1) % size; //advance rear
   queue[rear] = x;
 }
 
@@ -32,10 +32,10 @@ int dequeue() {
     return -1;
   }
   int x = queue[front];
-  if (front == rear)
+  if (front == rear) //If front and rear are pointing to the same element, that means this is the last element in the queue
     front = rear = -1;
   else
-    front = (front + 1) % size;
+    front = (front + 1) % size; //advance front
   return x;
 }
 
@@ -45,9 +45,9 @@ void display() {
     return;
   }
   printf("Queue: ");
-  for (int i = front; ; i = (i + 1) % size) {
+  for (int i = front; ; i = (i + 1) % size) { //from front to rear, advance i, to also include rear
     printf("%d ", queue[i]);
-    if (i == rear) break;
+    if (i == rear) break; //to stop the circular loop
   }
   printf("\n");
 }
