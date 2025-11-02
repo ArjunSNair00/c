@@ -19,7 +19,7 @@ void pushOp(char x) {
 }
 
 char popOp() {
-    if (opTop == -1) return -1;
+    if (opTop == -1) return '\0';
     return opStack[opTop--];
 }
 
@@ -29,9 +29,7 @@ void pushVal(int x) {
 }
 
 int popVal() {
-    if (valTop == -1) {
-        printf("Stack Underflow\n");
-        return 0;
+    if (valTop == -1) { return 0;
     }
     return valStack[valTop--];
 }
