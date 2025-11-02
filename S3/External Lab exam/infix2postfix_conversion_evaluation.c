@@ -77,22 +77,22 @@ int evaluatePostfix(char exp[]) {
     int a, b, c;
 
     while (*e != '\0') {
-        if (isdigit(*e)) {
-            pushVal(*e - '0'); // convert char → int
-        } else {
-            b = popVal(); // right operand
-            a = popVal(); // left operand
-            switch (*e) {
-                case '+': c = a + b; break;
-                case '-': c = a - b; break;
-                case '*': c = a * b; break;
-                case '/': c = a / b; break;
-                case '^': c = pow(a, b); break;
-                default:
-                    printf("Invalid operator: %c\n", *e);
-                    return 0;
-            }
-            pushVal(c);
+        if (isdigit(*e))
+          pushVal(*e - '0'); // convert char → int
+        else{
+          b = popVal(); // right operand
+          a = popVal(); // left operand
+          switch (*e) {
+            case '+': c = a + b; break;
+            case '-': c = a - b; break;
+            case '*': c = a * b; break;
+            case '/': c = a / b; break;
+            case '^': c = pow(a, b); break;
+            default:
+              printf("Invalid operator: %c\n", *e);
+              return 0;
+          }
+          pushVal(c);
         }
         e++;
     }
