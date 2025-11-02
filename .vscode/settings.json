@@ -32,7 +32,9 @@
         "algorithm": "c",
         "cmath": "c",
         "complex": "c",
-        "ctype.h": "c"
+        "ctype.h": "c",
+        "stdlib.h": "c",
+        "limits.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

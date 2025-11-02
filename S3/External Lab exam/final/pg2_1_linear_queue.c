@@ -16,8 +16,7 @@ void enqueue(int x) {
 int dequeue() {
   if (front == -1 || front > rear) { 
     printf("Underflow\n"); 
-    return -1; 
-  }
+    return -1; }
   int x = queue[front++];
   if (front > rear) 
     front = rear = -1;
@@ -29,6 +28,7 @@ void display() {
     printf("Empty\n"); 
     return; 
   }
+  printf("Queue: ");
   for (int i = front; i <= rear; i++) 
     printf("%d ", queue[i]);
   printf("\n");
@@ -38,19 +38,26 @@ int main() {
   int choice, x;
   printf("Enter queue size: ");
   scanf("%d", &size);
-
-  while(1){
+  printf("\nEnter choice: 1=Enqueue, 2=Dequeue, 3=Exit: \n");
+  do{   
+    printf(" > ");
     scanf("%d", &choice);
-    if (choice == 1) { 
+    switch(choice){
+    case 1: 
+      printf("Enter element: ");
       scanf("%d", &x); 
       enqueue(x); 
       display(); 
-    }
-    else if (choice == 2) { 
-      dequeue(); 
-      display(); }
-    else if (choice == 3) 
       break;
-  }
+    case 2: 
+      dequeue(); 
+      display();
+      break;
+    case 3: 
+      printf("Exiting.....");
+      break;
+    default:
+      printf("Invalid Choice");
+    }}while(choice != 3);
   return 0;
 }

@@ -27,10 +27,16 @@ void mergeSort(int arr[],int low,int high){
   }
 }
 
+
 int main(){
-  int arr[]={1,7,3,19,5};
-  int n=sizeof(arr)/sizeof(arr[0]);
-  printf("Unsorted Array: ");
+  int n;
+  printf("Enter size of array: ");
+  scanf("%d",&n);
+  int arr[n];
+  printf("Enter the elements of array: ");
+  for(int i=0;i<n;i++)
+    scanf("%d",&arr[i]); 
+  printf("\nUnsorted Array: ");
   print(arr,n);
   mergeSort(arr,0,n-1);
   printf("\nSorted Array: ");
