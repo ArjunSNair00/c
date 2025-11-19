@@ -6,7 +6,7 @@ int queue[MAX];
 int size;
 
 int is_full(){
-  // return ((front == 0 && rear == size - 1) || (front == rear + 1));
+  // same as ((front == 0 && rear == size - 1) || (front == rear + 1));
   return front == (rear + 1) % size;
 }
 
@@ -63,19 +63,15 @@ void delete_rear(){
     rear = (rear - 1 + size) % size;
 }
 
-void display()
-{
+void display() {
   if (is_empty()){
     printf("Empty\n");
     return;
   }
-  int i = front;
   printf("Queue: ");
-  while (1){
+  for (int i = front; ; i = (i + 1) % size) { //from front to rear, advance i, to also include rear
     printf("%d ", queue[i]);
-    if (i == rear)
-        break;
-    i = (i + 1) % size; // circular step
+    if (i == rear) break; //to stop the circular loop
   }
   printf("\n");
 }

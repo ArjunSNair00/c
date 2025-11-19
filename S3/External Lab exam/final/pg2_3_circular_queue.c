@@ -4,7 +4,7 @@
 int queue[MAX], front = -1, rear = -1, size;
 
 int is_full(){
-  //((front == 0 && rear == size - 1) || (front == rear + 1))
+  //same as ((front == 0 && rear == size - 1) || (front == rear + 1))
   return front == (rear + 1) % size; // full, if advancing rear overlap front
 }
 
